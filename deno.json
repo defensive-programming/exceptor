@@ -1,0 +1,9 @@
+{
+  "tasks": {
+    "d": "deno run -A --watch ./src/index.ts",
+    "u": "deno cache --lock-write ./src/index.ts"
+  },
+  "imports": {
+    "~/": "./"
+  }
+}
