@@ -1,2 +1,2 @@
 
-export { logger, AppError } from './lib.ts'
+export { logger, AppError, code } from './lib.ts'
