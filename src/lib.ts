@@ -12,7 +12,13 @@ import Axe from 'npm:axe';
 // FIXME: tree-shaking might work using esm.sh, but the built npm module will have problem to be used.
 // export { deserializeError, serializeError } from 'https://esm.sh/serialize-error?exports=deserializeError,serializeError'
 
-
+export const code = {
+  permissionDenied: 'permission-denied',
+  unknown: 'unknown',
+  cancelled: 'cancelled',
+  invalidArgument: 'invalid-argument',
+  unauthenticated: 'unauthenticated',
+}
 
 export const logger = (config: { environment: string }) =>
 {
@@ -60,7 +66,8 @@ export const logger = (config: { environment: string }) =>
   log.throw = (messageOrErrObj: Error | string, payload={}) =>
   {
     const $er = typeof messageOrErrObj === 'string' ? new AppError(messageOrErrObj, payload) : messageOrErrObj
-    log.err($er).then(() => { throw $er })
+    log.err($er)
+    throw $er
   }
   // WARN: enable this can create an error message in background script
   // async function hook(err, message, meta)
@@ -80,16 +87,11 @@ export const logger = (config: { environment: string }) =>
 };
 
 /**
- * ### Note
- * The general signature of `payload` is `{ code?: string; cause?: Error }`.
- * - `cause`: you only need this if you got another `Error` instance that leads to the current error.
- * - You should put as many error contexts as possible into `payload`;
- * those contexts will be placed under `details` of the instance of `KpError`
- *
- * ### Example
- * When the error is threw, and there's a parameter that related to that error context
- * called `user`, then you should put `user` into `payload` as well.
- * (ie., `new U.AppError('...', { user })`)
+ * ### Usage
+ * ```
+ * new AppError('message', { code?, cause?, ...otherDetails })
+ * ```
+ * The `otherDetails` will appear in `details` property of the error.
  */
 export class AppError extends Error
 {
