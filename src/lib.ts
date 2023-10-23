@@ -16,6 +16,7 @@ export const code = {
   permissionDenied: 'permission-denied',
   unknown: 'unknown',
   cancelled: 'cancelled',
+  failedPrecondition: 'failed-precondition',
   invalidArgument: 'invalid-argument',
   unauthenticated: 'unauthenticated',
 }
