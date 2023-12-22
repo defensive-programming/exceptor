@@ -132,7 +132,7 @@ export const Failure = Exception;
  * Otherwise, `throw new Exception(p1, p2)`
  */
 // deno-lint-ignore no-explicit-any
-export function bubble (p1: any, p2: Record<string, unknown>)
+export function bubble (p1: any, p2?: Record<string, unknown>)
 {
   throw arguments.length === 1 ? p1 : new Exception(p1, p2)
 }
