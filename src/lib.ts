@@ -66,7 +66,7 @@ export const logger = (config: { environment: string }) =>
   })
   log.throw = (messageOrErrObj: Error | string, payload={}) =>
   {
-    const $er = typeof messageOrErrObj === 'string' ? new AppError(messageOrErrObj, payload) : messageOrErrObj
+    const $er = typeof messageOrErrObj === 'string' ? new Exception(messageOrErrObj, payload) : messageOrErrObj
     throw $er
   }
   // WARN: enable this can create an error message in background script
