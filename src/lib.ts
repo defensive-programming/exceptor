@@ -6,7 +6,7 @@ import prepareStackTrace from 'npm:prepare-stack-trace';
 import consola from "npm:consola";
 // @ts-ignore: bypass TS error
 import Axe from 'npm:axe';
-
+import { z as $z } from "https://deno.land/x/zod/mod.ts";
 
 
 // FIXME: tree-shaking might work using esm.sh, but the built npm module will have problem to be used.
@@ -89,23 +89,50 @@ export const logger = (config: { environment: string }) =>
 /**
  * ### Usage
  * ```
- * new AppError('message', { code?, cause?, ...otherDetails })
+ * new AppError('message', { code?, cause?, name? ...otherDetails })
  * ```
  * The `otherDetails` will appear in `details` property of the error.
  */
-export class AppError extends Error
+export class Exception extends Error
 {
-  code; // just for supporting TS to compile
-  details; // just for supporting TS to compile
-  constructor(message:string, payload:{ code?: string, cause?: Error, [key:string]: unknown } ={})
-  {
-    const { code='no-code', cause, ...details } = payload
+  name: string;
+  code: string; // just for supporting TS to compile
+  details: Record<string, unknown>; // just for supporting TS to compile
+  cause: unknown;
+
+  constructor(
+    message: string,
+    payload: {
+      code?: string,
+      cause?: Error,
+      name?: string,
+      [key:string]: unknown
+    } = {}
+  ) {
+    $z.string().parse(message)
+    $z.object({}).parse(payload)
     super(message)
-    this.code = code
-    this.details = details
-    this.cause = cause
-    this.name = 'AppError'
-    this.message = message
+
+    const { code='no-code', cause, name, ...details } = payload
+
+    this.name = name || 'Exception';
+    this.code = code;
+    this.details = details;
+    this.cause = cause;
   }
 }
 
+export const Wrong = Exception
+export const Failure = Exception;
+
+/**
+ * ### Usage
+ * ---
+ * If only provide `p1`, it'll just rethrow `p1` .
+ * Otherwise, `throw new Exception(p1, p2)`
+ */
+// deno-lint-ignore no-explicit-any
+export function bubble (p1: any, p2: Record<string, unknown>)
+{
+  throw arguments.length === 1 ? p1 : new Exception(p1, p2)
+}
