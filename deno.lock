@@ -6,6 +6,7 @@
       "npm:consola": "npm:consola@3.2.3",
       "npm:prepare-stack-trace": "npm:prepare-stack-trace@0.0.4",
       "npm:ramda@latest": "npm:ramda@0.29.1",
+      "npm:serialize-error": "npm:serialize-error@11.0.3",
       "npm:stacktrace-js": "npm:stacktrace-js@2.0.2"
     },
     "npm": {
@@ -369,6 +370,12 @@
           "lru-cache": "lru-cache@6.0.0"
         }
       },
+      "serialize-error@11.0.3": {
+        "integrity": "sha512-2G2y++21dhj2R7iHAdd0FIzjGwuKZld+7Pl/bTU6YIkrC2ZMbVUjm+luj6A6V34Rv9XfKJDKpTWu9W4Gse1D9g==",
+        "dependencies": {
+          "type-fest": "type-fest@2.19.0"
+        }
+      },
       "source-map@0.5.6": {
         "integrity": "sha512-MjZkVp0NHr5+TPihLcadqnlVoGIoWo4IBHptutGh9wI3ttUYvCG26HkSuDi+K6lsZ25syXJXcctwgyVCt//xqA==",
         "dependencies": {}
@@ -436,6 +443,10 @@
       },
       "type-fest@0.8.1": {
         "integrity": "sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==",
+        "dependencies": {}
+      },
+      "type-fest@2.19.0": {
+        "integrity": "sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==",
         "dependencies": {}
       },
       "unset-value@2.0.1": {
