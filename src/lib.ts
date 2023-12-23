@@ -8,7 +8,6 @@ import consola from "npm:consola";
 import Axe from 'npm:axe';
 import { z as $z } from "https://deno.land/x/zod/mod.ts";
 
-
 // FIXME: tree-shaking might work using esm.sh, but the built npm module will have problem to be used.
 // export { deserializeError, serializeError } from 'https://esm.sh/serialize-error?exports=deserializeError,serializeError'
 
@@ -95,10 +94,8 @@ export const logger = (config: { environment: string }) =>
  */
 export class Exception extends Error
 {
-  name: string;
   code: string; // just for supporting TS to compile
   details: Record<string, unknown>; // just for supporting TS to compile
-  cause: unknown;
 
   constructor(
     message: string,
@@ -122,6 +119,16 @@ export class Exception extends Error
   }
 }
 
+/**
+ * These are just an alias of `Exception`.
+ * The reason for creating this is trying to make the situation more meaningful.
+ *
+ * For example,
+ * Sometimes when we got an error from `catch`, we might want to handle that error as a failure, not an error.
+ * But we still want to have the benefits that `Exception` has, such as `stack`, as a metadata in `Failure`.
+ *
+ * Another example is, sometimes, we might want to `reject` with a failure － `reject(new Failure(…))`
+ */
 export const Wrong = Exception
 export const Failure = Exception;
 
