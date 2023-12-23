@@ -141,5 +141,13 @@ export const Failure = Exception;
 // deno-lint-ignore no-explicit-any
 export function bubble (p1: any, p2?: Record<string, unknown>)
 {
-  throw arguments.length === 1 ? p1 : new Exception(p1, p2)
+  const $e = arguments.length === 1 ? p1 : new Exception(p1, p2)
+  runBeforeBubble($e)
+  throw $e
 }
+
+// deno-lint-ignore no-explicit-any
+let runBeforeBubble = ($e: any) => {}
+
+// deno-lint-ignore no-explicit-any
+export const beforeBubble = (cb: ($e: any) => void) => runBeforeBubble = cb
