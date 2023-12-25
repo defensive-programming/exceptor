@@ -96,9 +96,16 @@ export class Exception extends Error
 {
   code: string; // just for supporting TS to compile
   details: Record<string, unknown>; // just for supporting TS to compile
+  // ^
+  //  If relying on inheritance of the `message`, `name` from `Error`,
+  //  because it's a non-enumerable field,
+  //  it can be a problem for the client to do some work on `Exception`
+  //  such as error serialization (ie., Usually `message` will be drop off after a common serialization algorithm)
+  message: string; // ^
+  name: string; // ^
 
   constructor(
-    message: string,
+    message: string = '',
     payload: {
       code?: string,
       cause?: Error,
@@ -111,7 +118,7 @@ export class Exception extends Error
     super(message)
 
     const { code='no-code', cause, name, ...details } = payload
-
+    this.message = message;
     this.name = name || 'Exception';
     this.code = code;
     this.details = details;
