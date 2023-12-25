@@ -14,6 +14,7 @@ import { z as $z } from "https://deno.land/x/zod/mod.ts";
 export const code = {
   permissionDenied: 'permission-denied',
   unknown: 'unknown',
+  unimplemented: 'unimplemented',
   cancelled: 'cancelled',
   failedPrecondition: 'failed-precondition',
   invalidArgument: 'invalid-argument',
