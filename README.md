@@ -1,12 +1,26 @@
 
+# Workflow
+### Develop
+  ```bash
+  > deno task d # check deno.json for more details
+  ```
+### Build
+  ```bash
+  > deno run -A ./script/build-npm.ts [version-statement]
+  # eg., deno run -A ./script/build-npm.ts v0.0.1
+  ```
 
-# Build
-### NPM
-```
-> deno run -A ./script/build-npm.ts [version-statement]
-# eg., deno run -A ./script/build-npm.ts v0.0.1
-```
+### Check
 
-# Publish
-### NPM
-Once the npm module is built, cd to the location of the npm module, and run `npm publish`.
+  You don't need to do this unless you want to check which files will be packed for publishing.
+  Usually this is for debugging purpose.
+  ```bash
+  > npm pack
+  ```
+
+### Publish
+  ```bash
+  > cd npm
+  > npm publish # you may check which files will be packed by running `npm pack`
+  ```
+
