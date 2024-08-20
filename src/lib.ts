@@ -17,25 +17,36 @@ export const code = {
  * This is not expected to use directly.
  * Currently, the only consumer for this is `pivot`.
  */
-class Pivot extends Error {
-  code: string;
-  details: unknown;
-  name: string;
-  constructor(message: string = '', payload: unknown = null)
-  {
-    super();
-    this.name = 'Pivot';
-    this.code = message;
-    this.details = payload;
+class Pivot {
+  name = 'Pivot';
+  cause: unknown;
+  /**
+   * @param cause － who causes the pivot
+   */
+  constructor(cause: unknown) {
+    this.cause = cause
   }
 }
 /**
- * The only reason you use `pivot` is cuz you want to handle the task later.
- * The task is currently encoded using `code` as shown below,
- * and it'd be delegated to the closest, the same promise chain's `catch` handler.
- * So once the `catch` got that, it can do the details work for that specific task.
+ * The only reason you use `pivot` is when you want to handle the task later.
+ * The task will be delegated in the closest `catch`, the same promise chain's `catch` handler.
+ * The concept of pivot is like point-to-point communication:
+ * ```
+ *  .then(a => a || pivot('later')) // pivot from here
+ *  .catch($e => {
+ *    if ($e instanceof Pivot) { // got the pivot
+ *      if ($e.cause === 'later') doSomething()
+ *    }
+ *  })
+ * ```
+ * Note that, the task not includes an exception-like thing such as:
+ * - Error
+ * - Error-like object
+ * - Exception
+ * - Exception-like object
+ * - ...
  */
-export const pivot = (code: string, payload: unknown) => { throw new Pivot(code, payload) }
+export const pivot = (cause: unknown) => { throw new Pivot(cause) }
 
 /**
  * ### Usage
