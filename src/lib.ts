@@ -51,9 +51,13 @@ export const pivot = (cause: unknown) => { throw new Pivot(cause) }
 /**
  * ### Usage
  * ```
- * new AppError('message', { code?, cause?, name? ...otherDetails })
+ * new Exception('message', { code?, cause?, name? ...otherDetails })
  * ```
- * The `otherDetails` will appear in `details` property of the error.
+ * The `otherDetails` will be accessible in the property `details` of an `Exception` instance.
+ *
+ * Note that,
+ * almost all errors thrown by V8 have a stack property, that's why Exception extending from `Error`.
+ * In practice, this doesn't mean that `Exception` can only be used as an error, although it's technically an error.
  */
 export class Exception extends Error
 {
@@ -65,8 +69,7 @@ export class Exception extends Error
   //  it can be a problem for the client to do some work on `Exception`
   //  such as error serialization (ie., Usually `message` will be drop off after a common serialization algorithm)
   message: string; // ^
-  name: string; // ^
-
+  name: string = 'Exception' // ^
   constructor(
     message: string = '',
     payload: {
@@ -80,9 +83,8 @@ export class Exception extends Error
     $z.object({}).parse(payload)
     super(message)
 
-    const { code='no-code', cause, name, ...details } = payload
+    const { code='no-code', cause, ...details } = payload
     this.message = message;
-    this.name = name || 'Exception';
     this.code = code;
     this.details = details;
     this.cause = cause;
