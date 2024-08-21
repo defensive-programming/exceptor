@@ -1,6 +1,7 @@
 {
   "tasks": {
     "d": "deno run -A --watch ./src/index.ts",
+    "p": "deno run -A --watch ./src/playground.ts",
     "u": "deno cache --lock-write ./src/index.ts"
   },
   "imports": {
