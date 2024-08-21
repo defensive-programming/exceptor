@@ -7,7 +7,8 @@
       "npm:prepare-stack-trace": "npm:prepare-stack-trace@0.0.4",
       "npm:ramda@latest": "npm:ramda@0.29.1",
       "npm:serialize-error": "npm:serialize-error@11.0.3",
-      "npm:stacktrace-js": "npm:stacktrace-js@2.0.2"
+      "npm:stacktrace-js": "npm:stacktrace-js@2.0.2",
+      "npm:type-fest": "npm:type-fest@2.19.0"
     },
     "npm": {
       "@babel/code-frame@7.22.13": {
