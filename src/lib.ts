@@ -72,15 +72,9 @@ export class Exception extends Error
   //  such as error serialization (ie., Usually `message` will be drop off after a common serialization algorithm)
   message: string; // ^
   name: string = 'Exception' // ^
-  constructor(
-    message: string = '',
-    payload: {
-      code?: string,
-      cause?: Error,
-      name?: string,
-      [key:string]: unknown
-    } = {}
-  ) {
+  constructor(...args: Parameters<ExceptionSignature>)
+  {
+    const [message = '', payload = {}] = args;
     $z.string().parse(message)
     $z.object({}).parse(payload)
     super(message)
@@ -89,7 +83,7 @@ export class Exception extends Error
     this.message = message;
     this.code = code;
     this.details = details;
-    this.cause = cause;
+    this.cause = serializeException(cause);
   }
 }
 
@@ -113,15 +107,8 @@ export const Failure = Exception;
  * Otherwise, `throw new Exception(p1, p2)`
  */
 // deno-lint-ignore no-explicit-any
-export function bubble (p1: any, p2?: Record<string, unknown>): never
+export function bubble (p1: any, p2?: Record<string, any>): never
 {
-  const $e = arguments.length === 1 ? p1 : new Exception(p1, p2)
-  runBeforeBubble($e)
+  const $e = arguments.length === 1 ? p1 : new Exception(p1, p2!)
   throw $e
 }
-
-// deno-lint-ignore no-explicit-any
-let runBeforeBubble = ($e: any) => {}
-
-// deno-lint-ignore no-explicit-any
-export const beforeBubble = (cb: ($e: any) => void) => runBeforeBubble = cb
