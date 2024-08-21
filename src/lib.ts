@@ -3,6 +3,8 @@ import { z as $z } from "https://deno.land/x/zod/mod.ts";
 // FIXME: tree-shaking might work using esm.sh, but the built npm module will have problem to be used.
 // export { deserializeError, serializeError } from 'https://esm.sh/serialize-error?exports=deserializeError,serializeError'
 
+import { deserializeError, serializeError as serializeException, isErrorLike as isExceptionLike, ErrorLike as ExceptionLike } from 'npm:serialize-error'
+export { isExceptionLike, serializeException, type ExceptionLike }
 export const code = {
   permissionDenied: 'permission-denied',
   unknown: 'unknown',
