@@ -14,42 +14,6 @@ export const code = {
   invalidArgument: 'invalid-argument',
   unauthenticated: 'unauthenticated',
 }
-
-/**
- * This is not expected to use directly.
- * Currently, the only consumer for this is `pivot`.
- */
-class Pivot {
-  name = 'Pivot';
-  cause: unknown;
-  /**
-   * @param cause － who causes the pivot
-   */
-  constructor(cause: unknown) {
-    this.cause = cause
-  }
-}
-/**
- * The only reason you use `pivot` is when you want to handle the task later.
- * The task will be delegated in the closest `catch`, the same promise chain's `catch` handler.
- * The concept of pivot is like point-to-point communication:
- * ```
- *  .then(a => a || pivot('later')) // pivot from here
- *  .catch($e => {
- *    if ($e instanceof Pivot) { // got the pivot
- *      if ($e.cause === 'later') doSomething()
- *    }
- *  })
- * ```
- * Note that, the task not includes an exception-like thing such as:
- * - Error
- * - Error-like object
- * - Exception
- * - Exception-like object
- * - ...
- */
-export const pivot = (cause: unknown) => { throw new Pivot(cause) }
-
 /**
  * ### Usage
  * ```
@@ -111,7 +75,7 @@ type ExceptionSignature = (p1: string, p2: Record<string, any>) => void;
  *
  * ### Usage rules
  * ---
- * Just think `bubble2` is a functional `throw`, but more powerful.
+ * Just think `bubble` is a functional `throw`, but more powerful.
  *
  * If only `p1` is provided, it'll just rethrow `p1` if it's an exception-like,
  * otherwise an unexpected exception will be created with `cause` pointing to `p1` and throw the exception.
@@ -120,36 +84,6 @@ type ExceptionSignature = (p1: string, p2: Record<string, any>) => void;
  * An exception will be created based on `p1` and `p2` and the exception will be thrown.
  */
 // deno-lint-ignore no-explicit-any
-export function bubble2(p1: any): never;
-/**
- * Same as the signature of `ExceptionSignature`
- */
-export function bubble2 (p1: string, p2: Record<string, unknown>): never; // deno-lint-ignore no-explicit-any
-export function bubble2 (p1: any, p2?: Record<string, unknown>)
-{
-  if (arguments.length === 1)
-  {
-    p1 = serializeException(p1)
-    throw (
-      isExceptionLike(p1) ?
-      p1 :
-      new Exception("Unexpected exception", { code: code.unknown, cause: p1 })
-    )
-  }
-  else if (arguments.length === 2)
-  {
-    p2 = serializeException(p2)
-    throw (
-      typeof p1 === 'string' && typeof p2 === 'object' ?
-      new Exception(p1, p2) :
-      new Exception(
-        "Incorrect `bubble2` usage in the case of 2 arguments",
-        { code: code.invalidArgument, p1, p2 }
-      )
-    );
-  }
-}
-
 export function bubble(p1: any): never;
 /**
  * Same as the signature of `ExceptionSignature`
@@ -173,7 +107,7 @@ export function bubble (p1: any, p2?: Record<string, unknown>)
       typeof p1 === 'string' && typeof p2 === 'object' ?
       new Exception(p1, p2) :
       new Exception(
-        "Incorrect `bubble2` usage in the case of 2 arguments",
+        "Incorrect `bubble` usage in the case of 2 arguments",
         { code: code.invalidArgument, p1, p2 }
       )
     );
