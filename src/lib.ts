@@ -120,11 +120,11 @@ type ExceptionSignature = (p1: string, p2: Record<string, any>) => void;
  * An exception will be created based on `p1` and `p2` and the exception will be thrown.
  */
 // deno-lint-ignore no-explicit-any
-export function bubble2(p1: any): void;
+export function bubble2(p1: any): never;
 /**
  * Same as the signature of `ExceptionSignature`
  */
-export function bubble2 (p1: string, p2: Record<string, unknown>): void; // deno-lint-ignore no-explicit-any
+export function bubble2 (p1: string, p2: Record<string, unknown>): never; // deno-lint-ignore no-explicit-any
 export function bubble2 (p1: any, p2?: Record<string, unknown>)
 {
   if (arguments.length === 1)
@@ -150,15 +150,32 @@ export function bubble2 (p1: any, p2?: Record<string, unknown>)
   }
 }
 
+export function bubble(p1: any): never;
 /**
- * ### Usage
- * ---
- * If only provide `p1`, it'll just rethrow `p1` .
- * Otherwise, `throw new Exception(p1, p2)`
+ * Same as the signature of `ExceptionSignature`
  */
-// deno-lint-ignore no-explicit-any
-export function bubble (p1: any, p2?: Record<string, any>): never
+export function bubble (p1: string, p2: Record<string, unknown>): never; // deno-lint-ignore no-explicit-any
+export function bubble (p1: any, p2?: Record<string, unknown>)
 {
-  const $e = arguments.length === 1 ? p1 : new Exception(p1, p2!)
-  throw $e
+  if (arguments.length === 1)
+  {
+    p1 = serializeException(p1)
+    throw (
+      isExceptionLike(p1) ?
+      p1 :
+      new Exception("Unexpected exception", { code: code.unknown, cause: p1 })
+    )
+  }
+  else if (arguments.length === 2)
+  {
+    p2 = serializeException(p2)
+    throw (
+      typeof p1 === 'string' && typeof p2 === 'object' ?
+      new Exception(p1, p2) :
+      new Exception(
+        "Incorrect `bubble2` usage in the case of 2 arguments",
+        { code: code.invalidArgument, p1, p2 }
+      )
+    );
+  }
 }
