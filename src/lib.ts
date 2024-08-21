@@ -100,6 +100,56 @@ export class Exception extends Error
 export const Wrong = Exception
 export const Failure = Exception;
 
+// deno-lint-ignore no-explicit-any
+type ExceptionSignature = (p1: string, p2: Record<string, any>) => void;
+/**
+ * ### Return
+ * ---
+ * It'll always throw a serialized and exception-like object if using correctly
+ * The main reason for the serialization is to make sure all the details of an exception will not lost.
+ * eg., without the serialization, sending an exception over network might lose many things
+ *
+ * ### Usage rules
+ * ---
+ * Just think `bubble2` is a functional `throw`, but more powerful.
+ *
+ * If only `p1` is provided, it'll just rethrow `p1` if it's an exception-like,
+ * otherwise an unexpected exception will be created with `cause` pointing to `p1` and throw the exception.
+ *
+ * If both `p1` & `p2` are provided, `p1` must be a string and `p2` must be an object.
+ * An exception will be created based on `p1` and `p2` and the exception will be thrown.
+ */
+// deno-lint-ignore no-explicit-any
+export function bubble2(p1: any): void;
+/**
+ * Same as the signature of `ExceptionSignature`
+ */
+export function bubble2 (p1: string, p2: Record<string, unknown>): void; // deno-lint-ignore no-explicit-any
+export function bubble2 (p1: any, p2?: Record<string, unknown>)
+{
+  if (arguments.length === 1)
+  {
+    p1 = serializeException(p1)
+    throw (
+      isExceptionLike(p1) ?
+      p1 :
+      new Exception("Unexpected exception", { code: code.unknown, cause: p1 })
+    )
+  }
+  else if (arguments.length === 2)
+  {
+    p2 = serializeException(p2)
+    throw (
+      typeof p1 === 'string' && typeof p2 === 'object' ?
+      new Exception(p1, p2) :
+      new Exception(
+        "Incorrect `bubble2` usage in the case of 2 arguments",
+        { code: code.invalidArgument, p1, p2 }
+      )
+    );
+  }
+}
+
 /**
  * ### Usage
  * ---
