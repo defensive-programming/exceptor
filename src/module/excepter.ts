@@ -1,11 +1,32 @@
-import { z as $z } from "https://deno.land/x/zod/mod.ts";
+// TBD: function: `logException`
+// This is for the situation like this:
+// sometimes i can do: `console.error('[LOGGER]: Fail init Sentry in MAIN:', serializeException(e))`
+// but actually i can also do: `console.error(new Exception('Fail init Sentry in MAIN', { cause: e }))`
+// both are tedious, why not just:
+// `logException('Fail init Sentry in MAIN', { cause: e })`
+//
+// but i need to think more on this, cuz this can mean that:
+// - i may need to embed logger within bug-fucker
+// - what's the logging level for `logException`?
+//   - if it's not always "error", then how can I adjust it? create another function for dealing with different kind of logging level?
+//   - or maybe we just implement all these things literally on Logger?
+//     - eg., every kind of logging level method (eg., warn, info, ...) implement Report Interface
+//
+// but is this weird that I log error level thing but not use exception for that?
+// i guess this counts down to the fact that how I want to report thing, right?
+// but this case is also very special, cuz that is under the situation that Sentry doesn't work.
+//
+// if inventing all these things are not easy, maybe we can mimic the concept of scope came from Sentry,
+// so that we don't need so many different kinds of APIs?
+
+import { zod } from "./../dependency/index.ts";
 
 // FIXME: tree-shaking might work using esm.sh, but the built npm module will have problem to be used.
 // export { deserializeError, serializeError } from 'https://esm.sh/serialize-error?exports=deserializeError,serializeError'
-
-import { deserializeError as deserializeException, serializeError as serializeException, isErrorLike as isExceptionLike } from './serialize-error/index.js'
-import { ErrorLike as ExceptionLike } from './serialize-error/index.d.ts'
-export { isExceptionLike, serializeException, type ExceptionLike, deserializeException }
+import * as U from './aider.ts';
+import { deserializeError as deserializeException, serializeError as serializeException, isErrorLike as isExceptionLike } from './serialize-error/index.js';
+import type { ErrorLike as ExceptionLike } from './serialize-error/index.d.ts';
+export { isExceptionLike, serializeException, type ExceptionLike, deserializeException };
 export const code = {
   permissionDenied: 'permission-denied',
   unknown: 'unknown',
@@ -40,8 +61,8 @@ export class Exception extends Error
   constructor(...args: Parameters<ExceptionSignature>)
   {
     const [message = '', payload = {}] = args;
-    $z.string().parse(message)
-    $z.object({}).parse(payload)
+    zod.string().parse(message)
+    zod.object({}).parse(payload)
     super(message)
 
     const { code='no-code', cause, ...details } = payload
@@ -67,6 +88,49 @@ export const Failure = Exception;
 
 // deno-lint-ignore no-explicit-any
 type ExceptionSignature = (p1: string, p2: Record<string, any>) => void;
+
+type DesignBubbleOptions = {
+  beforeThrow?: ($e: Exception) => void;
+  willThrow: boolean;
+  shouldLogException: boolean;
+}
+
+export const designBubble = ($o: DesignBubbleOptions) =>
+{
+  // deno-lint-ignore no-explicit-any
+  function bubble(p1: any): never;
+  /**
+   * Same as the signature of `ExceptionSignature`
+   */
+  function bubble (p1: string, p2: Record<string, unknown>): never; // deno-lint-ignore no-explicit-any
+  function bubble (p1: any, p2?: Record<string, unknown>)
+  {
+    const doBubble = ($e: Exception) =>
+    {
+      if (U.is('function', $o.beforeThrow)) $o.beforeThrow($e);
+      if ($o.shouldLogException) { console.error('bubble: ', $e); }
+      if ($o.willThrow) { throw $e; }
+    }
+    if (arguments.length === 1)
+    {
+      p1 = serializeException(p1);
+      const $e = isExceptionLike(p1) ? p1 : new Exception("Unexpected exception", { code: code.unknown, cause: p1 });
+      return doBubble($e)
+    }
+    else if (arguments.length === 2)
+    {
+      p2 = serializeException(p2);
+      if (U.is('string', p1) && U.is('object', p2)) return doBubble(new Exception(p1, p2))
+      throw new Exception(
+        "Invalid API usage on `bubble` in the case of 2 arguments",
+        { code: code.invalidArgument, p1, p2 }
+      );
+    }
+  }
+  return bubble;
+}
+// Sentry.captureException($v, { extra: { functionName: 'integrateNotion' } })
+
 /**
  * ### Return
  * ---
@@ -84,33 +148,7 @@ type ExceptionSignature = (p1: string, p2: Record<string, any>) => void;
  * If both `p1` & `p2` are provided, `p1` must be a string and `p2` must be an object.
  * An exception will be created based on `p1` and `p2` and the exception will be thrown.
  */
-// deno-lint-ignore no-explicit-any
-export function bubble(p1: any): never;
-/**
- * Same as the signature of `ExceptionSignature`
- */
-export function bubble (p1: string, p2: Record<string, unknown>): never; // deno-lint-ignore no-explicit-any
-export function bubble (p1: any, p2?: Record<string, unknown>)
-{
-  if (arguments.length === 1)
-  {
-    p1 = serializeException(p1)
-    throw (
-      isExceptionLike(p1) ?
-      p1 :
-      new Exception("Unexpected exception", { code: code.unknown, cause: p1 })
-    )
-  }
-  else if (arguments.length === 2)
-  {
-    p2 = serializeException(p2)
-    throw (
-      typeof p1 === 'string' && typeof p2 === 'object' ?
-      new Exception(p1, p2) :
-      new Exception(
-        "Incorrect `bubble` usage in the case of 2 arguments",
-        { code: code.invalidArgument, p1, p2 }
-      )
-    );
-  }
-}
+export const bubble = designBubble({
+  willThrow: true,
+  shouldLogException: false
+})

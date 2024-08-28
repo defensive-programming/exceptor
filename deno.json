@@ -5,6 +5,6 @@
     "u": "deno cache --lock-write ./src/index.ts"
   },
   "imports": {
-    "~/": "./"
+    "~/": "./src/"
   }
 }
