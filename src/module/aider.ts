@@ -1,4 +1,4 @@
-import { zod } from "./../dependency/index.ts";
+import * as zod from "zod";
 
 type Types = 'object' | 'boolean' | 'array' | 'string' | 'function';
 

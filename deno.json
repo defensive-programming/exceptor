@@ -1,10 +1,20 @@
 {
+  "name": "bug-fucker",
+  "version": "0.0.32",
+  "description": "fuck ur bugs",
+  "license": "MIT",
   "tasks": {
     "d": "deno run -A --watch ./src/index.ts",
     "p": "deno run -A --watch ./src/playground.ts",
-    "u": "deno cache --lock-write ./src/index.ts"
+    "u": "deno cache --lock-write ./src/index.ts",
+    "b": "deno run -A ./script/build-npm.ts",
+    "r": "deno run -A --allow-read npm:release-it@latest --config release.config.js"
   },
   "imports": {
+    "@deno/dnt": "jsr:@deno/dnt@^0.41.3",
+    "zod": "npm:zod@^3.23.8",
+    "release-it": "npm:release-it@latest",
+    "bumper": "npm:@release-it/bumper@latest",
     "~/": "./src/"
   }
 }

@@ -1,4 +1,16 @@
 
+
+
+# TODO
+- release
+  - bump the version on deno.json
+  - git commit
+  - git push
+  - create release on Github
+  - build npm
+  - publish npm
+
+
 # Workflow
 ### Develop
   ```bash

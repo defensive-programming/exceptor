@@ -19,7 +19,7 @@
 // if inventing all these things are not easy, maybe we can mimic the concept of scope came from Sentry,
 // so that we don't need so many different kinds of APIs?
 
-import { zod } from "./../dependency/index.ts";
+import * as zod from "zod";
 
 // FIXME: tree-shaking might work using esm.sh, but the built npm module will have problem to be used.
 // export { deserializeError, serializeError } from 'https://esm.sh/serialize-error?exports=deserializeError,serializeError'
@@ -163,3 +163,5 @@ export const bubble = designBubble({
   willThrow: true,
   shouldLogException: false
 })
+
+const a = [...new Set()]
