@@ -89,6 +89,13 @@ export const Failure = Exception;
 // deno-lint-ignore no-explicit-any
 type ExceptionSignature = (p1: string, p2: Record<string, any>) => void;
 
+/**
+ * Use cases: (there're many, below just some examples)
+ * - ❓ Weird scenario: when Sentry's init is failed, and we don't want to throw to crash the app, but just log it.
+ *      The current solution is `console.error('...', serializeException(e))`.
+ *      I guess in this situation, we don't need to use `designBubble`, but simply just use logger?
+ *      This actually shows that `bubble` has some overlapping relationship with logger if we don't separate their responsibilities clearly.
+ */
 type DesignBubbleOptions = {
   beforeThrow?: ($e: Exception) => void;
   willThrow: boolean;
