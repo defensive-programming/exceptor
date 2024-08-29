@@ -101,6 +101,7 @@ type DesignBubbleOptions = {
   willThrow: boolean;
   shouldLogException: boolean;
   messagePrefix?: string;
+  defaultDetails?: () => Record<string, unknown>;
 }
 
 export const designBubble = ($o: DesignBubbleOptions) =>
@@ -116,6 +117,7 @@ export const designBubble = ($o: DesignBubbleOptions) =>
     const doBubble = ($e: Exception) =>
     {
       if ($o.messagePrefix) $e.message = `${$o.messagePrefix} ${$e.message || ''}`;
+      if (U.is('function', $o.defaultDetails)) $e.details = { ...$e.details, ...$o.defaultDetails() };
       if (U.is('function', $o.beforeThrow)) $o.beforeThrow($e);
       if ($o.shouldLogException) { console.error('💥 [BUBBLE]: ', $e); }
       if ($o.willThrow) { throw $e; }
