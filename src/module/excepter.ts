@@ -115,7 +115,7 @@ export const designBubble = ($o: DesignBubbleOptions) =>
     const doBubble = ($e: Exception) =>
     {
       if (U.is('function', $o.beforeThrow)) $o.beforeThrow($e);
-      if ($o.shouldLogException) { console.error('bubble: ', $e); }
+      if ($o.shouldLogException) { console.error('💥 [BUBBLE]: ', $e); }
       if ($o.willThrow) { throw $e; }
     }
     if (arguments.length === 1)
