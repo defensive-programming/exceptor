@@ -1,5 +1,11 @@
 {
   "scripts": {
     "publish:npm": "npm publish npm/"
-  }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/its-tim-lee/bug-fucker.git"
+  },
+  "description": "fuck ur bugs"
 }

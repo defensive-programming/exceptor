@@ -4,18 +4,18 @@ module.exports = {
     tag: true,
     push: true
   },
-  npm: false,
   github: {
     release: true,
     releaseName: 'v${version}'
   },
-  // hooks: {
-  //   "after:bump": "deno task b"
-  // },
 	plugins: {
 	  "@release-it/bumper": {
 	    "in": "deno.json",
 	    "out": "deno.json",
 	  }
-	}
+	},
+  /**
+   * WARN: Do not use any kind of npm feature here, cuz it doesn't work well with Deno.
+   */
+  npm: false
 }

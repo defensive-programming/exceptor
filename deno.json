@@ -1,9 +1,7 @@
 {
   "name": "bug-fucker",
   "version": "0.0.51",
-  "description": "fuck ur bugs",
   "exports": "./src/index.ts",
-  "license": "MIT",
   "tasks": {
     "u": "deno cache --lock-write ./src/index.ts",
     "dev": "deno run -A --watch ./src/playground.ts",
