@@ -6,13 +6,10 @@ module.exports = {
   },
   github: {
     release: true,
-  },
-  npm: {
-    publish: true,
-    publishPath: './npm'
+    releaseName: 'v${version}'
   },
   hook: {
-    "after:github:release": "deno task b"
+    "after:git:release": "deno task b"
   },
 	plugins: {
 	  "@release-it/bumper": {
