@@ -7,10 +7,10 @@
     "d": "deno run -A --watch ./src/index.ts",
     "p": "deno run -A --watch ./src/playground.ts",
     "u": "deno cache --lock-write ./src/index.ts",
-    "release": "deno run -A --allow-read npm:release-it@latest --config release.config.js",
+    "r": "deno run -A --allow-read npm:release-it@latest --config release.config.js",
     "build": "deno run -A ./script/build-npm.ts",
     "publish": "deno task publish:npm",
-    "launch": "deno task release && deno task build && deno task publish",
+    "launch": "deno task r && deno task build && deno task publish",
     "bp": "deno task build && deno task publish"
   },
   "imports": {

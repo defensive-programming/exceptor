@@ -5,6 +5,9 @@ import metadata from './../deno.json' with { type: "json" };
 await dnt.emptyDir("./npm");
 
 await dnt.build({
+  typeCheck: false,
+  test: false,
+  declaration: false,
   entryPoints: ["./src/index.ts"],
   outDir: "./npm",
   shims: {
