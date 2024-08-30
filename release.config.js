@@ -4,18 +4,16 @@ module.exports = {
     tag: true,
     push: true
   },
-  // github: {
-  //   release: true,
-  //   releaseName: 'v${version}'
-  // },
   npm: {
-    publish: true,
-    publishPath: 'npm',
-    "ignoreVersion": true,
+    publish: false,
+    ignoreVersion: true,
     skipChecks: true
   },
+  github: {
+    release: true,
+    releaseName: 'v${version}'
+  },
   hooks: {
-    // "after:github:release": "deno task b"
     "after:bump": "deno task b"
   },
 	plugins: {

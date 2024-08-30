@@ -1,6 +1,6 @@
 {
   "name": "bug-fucker",
-  "version": "0.0.40",
+  "version": "0.0.41",
   "description": "fuck ur bugs",
   "license": "MIT",
   "tasks": {
@@ -8,7 +8,9 @@
     "p": "deno run -A --watch ./src/playground.ts",
     "u": "deno cache --lock-write ./src/index.ts",
     "b": "deno run -A ./script/build-npm.ts",
-    "r": "deno run -A --allow-read npm:release-it@latest --config release.config.js"
+    "release": "deno run -A --allow-read npm:release-it@latest --config release.config.js",
+    "publish": "deno task publish:npm",
+    "launch": "deno task release && deno task publish"
   },
   "imports": {
     "@deno/dnt": "jsr:@deno/dnt@^0.41.3",
