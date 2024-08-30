@@ -5,11 +5,7 @@ import metadata from './../deno.json' with { type: "json" };
 await dnt.emptyDir("./npm");
 
 await dnt.build({
-  // typeCheck: false,
-  test: false,
-
-
-
+  test: false, // @20240830
   entryPoints: ["./src/index.ts"],
   outDir: "./npm",
   shims: {
@@ -47,6 +43,20 @@ await dnt.build({
       !script/src
     `;
     Deno.writeTextFileSync("npm/.npmignore", npmignoreContent.trim());
+    /**
+     * @20240830 HACK:
+     * Currently, it seems that there's a bug as described below:
+     * - `deno task launch`
+     * - during the execution of `deno task build`, there's a node_modules will be created in the root folder
+     * - that node_modules will finally cause the failed build
+     * - but if you remove that node_modules and run  `deno task build` solely, it will be successful.
+     *
+     * It seems like the root cause is not really just the generated node_modules
+     * (which shouldn't be generated), but the setting `test` in dnt configuration.
+     *
+     * Turn it off can make build successful.
+     *
+     */
     Deno.removeSync("node_modules", { recursive: true });
   },
 });

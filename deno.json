@@ -4,14 +4,18 @@
   "description": "fuck ur bugs",
   "license": "MIT",
   "tasks": {
-    "d": "deno run -A --watch ./src/index.ts",
-    "p": "deno run -A --watch ./src/playground.ts",
     "u": "deno cache --lock-write ./src/index.ts",
-    "r": "deno run -A --allow-read npm:release-it@latest --config release.config.js",
+    "dev": "deno run -A --watch ./src/playground.ts",
     "build": "deno run -A ./script/build-npm.ts",
+    "release": "deno run -A --allow-read npm:release-it@latest --config release.config.js",
     "publish": "deno task publish:npm",
-    "launch": "deno task r && deno task build && deno task publish",
-    "bp": "deno task build && deno task publish"
+    "launch": "deno task release && deno task build && deno task publish",
+
+    "d": "deno task dev",
+    "b": "deno task build",
+    "r": "deno task release",
+    "p": "deno task publish",
+    "l": "deno task launch"
   },
   "imports": {
     "@deno/dnt": "jsr:@deno/dnt@^0.41.3",

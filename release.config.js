@@ -4,11 +4,7 @@ module.exports = {
     tag: true,
     push: true
   },
-  npm: {
-    publish: false,
-    ignoreVersion: true,
-    skipChecks: true
-  },
+  npm: false,
   github: {
     release: true,
     releaseName: 'v${version}'
