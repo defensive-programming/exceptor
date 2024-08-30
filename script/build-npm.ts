@@ -44,5 +44,6 @@ await dnt.build({
       !script/src
     `;
     Deno.writeTextFileSync("npm/.npmignore", npmignoreContent.trim());
+    Deno.removeSync("node_modules", { recursive: true });
   },
 });
