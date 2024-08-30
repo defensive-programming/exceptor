@@ -11,7 +11,8 @@ module.exports = {
   npm: {
     publish: true,
     publishPath: 'npm',
-    "ignoreVersion": true
+    "ignoreVersion": true,
+    skipChecks: true
   },
   hooks: {
     // "after:github:release": "deno task b"
