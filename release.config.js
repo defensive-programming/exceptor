@@ -4,9 +4,13 @@ module.exports = {
     tag: true,
     push: true
   },
-  github: {
-    release: true,
-    releaseName: 'v${version}'
+  // github: {
+  //   release: true,
+  //   releaseName: 'v${version}'
+  // },
+  npm: {
+    publish: true,
+    publishPath: 'npm'
   },
   hook: {
     "after:git:release": "deno task b"
