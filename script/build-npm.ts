@@ -6,7 +6,10 @@ await dnt.emptyDir("./npm");
 
 await dnt.build({
   typeCheck: false,
-  test: false,
+  // test: false,
+
+
+
   entryPoints: ["./src/index.ts"],
   outDir: "./npm",
   shims: {
