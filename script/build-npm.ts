@@ -10,7 +10,7 @@ await dnt.build({
   shims: {
     deno: true,
   },
-  importMap: "./deno.json",
+  importMap: "./deno.json", // https://github.com/denoland/dnt/issues/260
   package: {
     name: metadata.name,
     version: metadata.version,
