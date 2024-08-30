@@ -10,11 +10,13 @@ module.exports = {
   // },
   npm: {
     publish: true,
-    publishPath: 'npm'
+    publishPath: 'npm',
+    "ignoreVersion": true
   },
-  // hooks: {
-  //   "after:github:release": "deno task b"
-  // },
+  hooks: {
+    // "after:github:release": "deno task b"
+    "after:bump": "deno task b"
+  },
 	plugins: {
 	  "@release-it/bumper": {
 	    "in": "deno.json",
