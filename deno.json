@@ -10,7 +10,8 @@
     "release": "deno run -A --allow-read npm:release-it@latest --config release.config.js",
     "build": "deno run -A ./script/build-npm.ts",
     "publish": "deno task publish:npm",
-    "launch": "deno task release && deno task build && deno task publish"
+    "launch": "deno task release && deno task build && deno task publish",
+    "bp": "deno task build && deno task publish"
   },
   "imports": {
     "@deno/dnt": "jsr:@deno/dnt@^0.41.3",
