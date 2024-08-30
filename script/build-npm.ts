@@ -10,6 +10,7 @@ await dnt.build({
   shims: {
     deno: true,
   },
+  importMap: "./deno.json",
   package: {
     name: metadata.name,
     version: metadata.version,
