@@ -1,15 +1,18 @@
 module.exports = {
   git: {
-    commit: false,
-    tag: false,
-    push: false
+    commit: true,
+    tag: true,
+    push: true
   },
   github: {
-    release: false,
+    release: true,
   },
   npm: {
-    publish: false,
-
+    publish: true,
+    publishPath: './npm'
+  },
+  hook: {
+    "after:github:release": "deno task b"
   },
 	plugins: {
 	  "@release-it/bumper": {
