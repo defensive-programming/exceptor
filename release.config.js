@@ -13,9 +13,9 @@ module.exports = {
     release: true,
     releaseName: 'v${version}'
   },
-  hooks: {
-    "after:bump": "deno task b"
-  },
+  // hooks: {
+  //   "after:bump": "deno task b"
+  // },
 	plugins: {
 	  "@release-it/bumper": {
 	    "in": "deno.json",
