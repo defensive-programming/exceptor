@@ -1,6 +1,6 @@
 {
   "name": "bug-fucker",
-  "version": "0.0.53",
+  "version": "0.0.54",
   "exports": "./src/index.ts",
   "tasks": {
     "u": "deno cache --lock-write ./src/index.ts",
