@@ -55,6 +55,12 @@ await dnt.build({
      * Note that, it seems like some npm packages can cause deno to generate node_modules,
      * and there's an option that can force that to be generated, which has been used in deno.json: `nodeModulesDir`
      */
-    // Deno.removeSync("node_modules", { recursive: true });
+    removeNodeModulesFolderIfExists()
   },
 });
+
+const removeNodeModulesFolderIfExists = () =>
+{
+  const stat = Deno.statSync("node_modules");
+  stat.isDirectory && Deno.removeSync("node_modules", { recursive: true });
+}
