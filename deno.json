@@ -6,9 +6,10 @@
     "u": "deno cache --lock-write ./src/index.ts",
     "dev": "deno run -A --watch --check ./src/playground.ts",
     "build": "deno run -A ./script/build-npm.ts",
+    "question": "deno run -A ./script/launch-prerequisite.ts",
     "release": "deno run -A --allow-read npm:release-it@latest --config release.config.js",
     "publish": "deno task publish:npm",
-    "launch": "deno task release && deno task build && deno task publish",
+    "launch": "deno task question && deno task release && deno task build && deno task publish",
     "update-lock": "deno cache --frozen=false ./src/index.ts",
     "d": "deno task dev",
     "b": "deno task build",
@@ -17,12 +18,15 @@
     "l": "deno task launch"
   },
   "imports": {
-    "@deno/dnt": "jsr:@deno/dnt@^0.41.3",
+    "bug-fucker": "./src/index.ts",
     "zod": "npm:zod@^3.23.8",
+    "@deno/dnt": "jsr:@deno/dnt@^0.41.3",
     "release-it": "npm:release-it@latest",
     "bumper": "npm:@release-it/bumper@latest",
+    "@inquirer/prompts": "npm:@inquirer/prompts@latest",
     "~/": "./src/"
   },
+  "nodeModulesDir": false,
   "lock": {
     "frozen": true
   }

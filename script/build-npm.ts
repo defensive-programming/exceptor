@@ -52,6 +52,8 @@ await dnt.build({
      *
      * Turn it off can make build successful.
      *
+     * Note that, it seems like some npm packages can cause deno to generate node_modules,
+     * and there's an option that can force that to be generated, which has been used in deno.json: `nodeModulesDir`
      */
     Deno.removeSync("node_modules", { recursive: true });
   },
