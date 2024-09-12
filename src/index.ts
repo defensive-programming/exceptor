@@ -1,1 +1,1 @@
-export * from './module/excepter.ts'
+export * from './excepter.ts'

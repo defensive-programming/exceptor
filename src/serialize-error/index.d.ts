@@ -1,4 +1,4 @@
-import {Primitive, JsonObject} from 'npm:type-fest';
+import type {Primitive, JsonObject} from 'type-fest';
 
 export {default as errorConstructors} from './error-constructors.js';
 

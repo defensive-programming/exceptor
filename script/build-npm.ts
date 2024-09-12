@@ -1,44 +1,49 @@
 import * as dnt from "@deno/dnt";
-import denoJSON from './../deno.json' with { type: "json" };
-import packageJSON from './../package.json' with { type: "json" };
+import denoJSON from 'denoJSON' with { type: "json" };
+import packageJSON from 'packageJSON' with { type: "json" };
+import * as U from '@es-toolkit/es-toolkit';
+import { exists } from "@std/fs";
+import * as cst from "./../constant.ts";
 
-const metadata = {
-  name: denoJSON.name,
-  description: packageJSON.description,
-  version: denoJSON.version,
-  license: packageJSON.license,
-  repository: packageJSON.repository,
+const addMoreEntriesIntoNpmIgnore = () =>
+{ // DNT does define some entries in .npmignore, but it's not enough
+  const $p = `${cst.folder.dist}/${cst.file.npmignore}`;
+  return exists($p)
+    .then(() => Deno.readTextFileSync($p))
+    .then((c: string) => Deno.writeTextFileSync($p, (c += "package-lock.json").trim()))
 }
 
-await dnt.emptyDir("./npm");
+const removeNodeModulesFolderIfExists = () =>
+(
+  exists("node_modules")
+  .then(() => Deno.remove("node_modules", { recursive: true }))
+  .catch(() => console.error('Fail to remove node_modules'))
+);
+
+await dnt.emptyDir(cst.folder.dist);
 
 await dnt.build({
+  esModule: false,
   test: false, // @20240830
   entryPoints: ["./src/index.ts"],
-  outDir: "./npm",
+  outDir: cst.folder.dist,
   shims: {
-    deno: true,
+    deno: true, // so if you've used Deno-specific APIs, they will be transformed into Node.js APIs during the build
+  },
+  compilerOptions: {
+    lib: ['DOM.Iterable', 'DOM']
   },
   importMap: "./deno.json", // https://github.com/denoland/dnt/issues/260
-  package: metadata,
+  package: {
+    name: denoJSON.name,
+    version: denoJSON.version,
+    ...U.omit(packageJSON, ['scripts'])
+  },
+  declaration: 'inline',
   postBuild() {
     // steps to run after building and before running the tests
-    // Deno.copyFileSync("LICENSE", "npm/LICENSE");
-    Deno.copyFileSync("README.md", "npm/README.md");
-
-    // Create or modify the .npmignore file
-    const npmignoreContent = `
-      /src
-      esm/test.js
-      esm/test.d.ts
-      script/test.js
-      script/test.d.ts
-      test_runner.js
-      yarn.lock
-      pnpm-lock.yaml
-      !script/src
-    `;
-    Deno.writeTextFileSync("npm/.npmignore", npmignoreContent.trim());
+    Deno.copyFileSync(cst.file.license, `${cst.folder.dist}/${cst.file.license}`);
+    Deno.copyFileSync(cst.file.readme, `${cst.folder.dist}/${cst.file.readme}`);
     /**
      * @20240830 HACK:
      * Currently, it seems that there's a bug as described below:
@@ -53,14 +58,9 @@ await dnt.build({
      * Turn it off can make build successful.
      *
      * Note that, it seems like some npm packages can cause deno to generate node_modules,
+     * (https://github.com/denoland/deno/issues/17930)
      * and there's an option that can force that to be generated, which has been used in deno.json: `nodeModulesDir`
      */
-    removeNodeModulesFolderIfExists()
+    return addMoreEntriesIntoNpmIgnore().then(() => removeNodeModulesFolderIfExists())
   },
 });
-
-const removeNodeModulesFolderIfExists = () =>
-{
-  const stat = Deno.statSync("node_modules");
-  stat.isDirectory && Deno.removeSync("node_modules", { recursive: true });
-}

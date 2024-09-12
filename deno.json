@@ -1,33 +1,51 @@
 {
-  "name": "bug-fucker",
+  "name": "@defensive-programming/exceptor",
   "version": "0.0.54",
   "exports": "./src/index.ts",
   "tasks": {
-    "u": "deno cache --lock-write ./src/index.ts",
-    "dev": "deno run -A --watch --check ./src/playground.ts",
-    "build": "deno run -A ./script/build-npm.ts",
-    "question": "deno run -A ./script/launch-prerequisite.ts",
-    "release": "deno run -A --allow-read npm:release-it@latest --config release.config.js",
     "publish": "deno task publish:npm",
+    "build": "deno run -A ./script/build-npm.ts",
+    "release": "deno run -A --allow-read npm:release-it@latest --config release.config.js",
+    "question": "deno run -A ./script/launch-prerequisite.ts",
     "launch": "deno task question && deno task release && deno task build && deno task publish",
-    "update-lock": "deno cache --frozen=false ./src/index.ts",
-    "d": "deno task dev",
+    "qa:development": "deno run -A --watch --check ./src/playground.ts",
+    "type-check": "deno check src/index.ts",
+    "c:m": "deno cache --frozen=false ./src/index.ts",
+    "d": "deno task qa:development",
     "b": "deno task build",
     "r": "deno task release",
     "p": "deno task publish",
     "l": "deno task launch"
   },
   "imports": {
-    "bug-fucker": "./src/index.ts",
-    "zod": "npm:zod@^3.23.8",
+    "type-fest": "npm:type-fest@latest",
+    "@es-toolkit/es-toolkit": "jsr:@es-toolkit/es-toolkit",
     "@deno/dnt": "jsr:@deno/dnt@^0.41.3",
-    "release-it": "npm:release-it@latest",
-    "bumper": "npm:@release-it/bumper@latest",
+    "@types/node": "npm:@types/node@^18.16.19",
     "@inquirer/prompts": "npm:@inquirer/prompts@latest",
-    "~/": "./src/"
+    "bumper": "npm:@release-it/bumper@latest",
+    "release-it": "npm:release-it@latest",
+    "zod": "npm:zod@^3.23.8",
+    "@defensive-programming/aider": "npm:@defensive-programming/aider@latest",
+    "@std/fs": "jsr:@std/fs",
+    "@deno/shim-deno": "npm:@deno/shim-deno@^0.19.2",
+    "denoJSON": "./deno.json",
+    "packageJSON": "./package.json",
+    "~/": "./src/",
+    "@/": "./"
   },
   "nodeModulesDir": false,
   "lock": {
-    "frozen": true
+    "frozen": false
+  },
+  "compilerOptions": {
+    "checkJs": true,
+    "lib": [
+      "dom",
+      "deno.ns",
+      "deno.worker",
+      "dom.asynciterable",
+      "dom.iterable"
+    ]
   }
 }

@@ -1,0 +1,6 @@
+# Locks
+yarn.lock
+package-lock.json
+
+# Liscense
+LICENSE.*

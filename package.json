@@ -1,11 +1,19 @@
 {
-  "scripts": {
-    "publish:npm": "npm publish npm/"
-  },
-  "license": "MIT",
+  "description": "The first standard way to do exceptional handling in JS",
+  "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/its-tim-lee/bug-fucker.git"
+    "url": "https:git@github.com:defensive-programming/exceptor.git"
   },
-  "description": "fuck ur bugs"
+  "keywords": [
+    "Error",
+    "Exception",
+    "Defensive"
+  ],
+  "author": "Tim Lee",
+  "license": "Apache-2.0",
+  "scripts": {
+    "qa": "node playground.js",
+    "publish:npm": "npm publish --access public npm/"
+  }
 }

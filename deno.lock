@@ -5,6 +5,7 @@
       "jsr:@david/code-block-writer@^13.0.2": "jsr:@david/code-block-writer@13.0.2",
       "jsr:@deno/cache-dir@^0.10.3": "jsr:@deno/cache-dir@0.10.3",
       "jsr:@deno/dnt@^0.41.3": "jsr:@deno/dnt@0.41.3",
+      "jsr:@es-toolkit/es-toolkit": "jsr:@es-toolkit/es-toolkit@1.17.0",
       "jsr:@std/assert@^0.223.0": "jsr:@std/assert@0.223.0",
       "jsr:@std/assert@^0.226.0": "jsr:@std/assert@0.226.0",
       "jsr:@std/bytes@^0.223.0": "jsr:@std/bytes@0.223.0",
@@ -13,6 +14,7 @@
       "jsr:@std/fmt@1": "jsr:@std/fmt@1.0.1",
       "jsr:@std/fmt@^0.223": "jsr:@std/fmt@0.223.0",
       "jsr:@std/fmt@^1.0.0-rc.1": "jsr:@std/fmt@1.0.1",
+      "jsr:@std/fs": "jsr:@std/fs@1.0.2",
       "jsr:@std/fs@1": "jsr:@std/fs@1.0.2",
       "jsr:@std/fs@^0.223": "jsr:@std/fs@0.223.0",
       "jsr:@std/fs@^0.229.3": "jsr:@std/fs@0.229.3",
@@ -29,14 +31,19 @@
       "jsr:@std/streams@^1.0.0-rc.4": "jsr:@std/streams@1.0.3",
       "jsr:@ts-morph/bootstrap@^0.24.0": "jsr:@ts-morph/bootstrap@0.24.0",
       "jsr:@ts-morph/common@^0.24.0": "jsr:@ts-morph/common@0.24.0",
+      "npm:@defensive-programming/aider": "npm:@defensive-programming/aider@0.0.3",
+      "npm:@defensive-programming/aider@latest": "npm:@defensive-programming/aider@0.0.3",
       "npm:@inquirer/prompts@latest": "npm:@inquirer/prompts@5.3.8",
       "npm:@release-it/bumper@latest": "npm:@release-it/bumper@6.0.1_release-it@17.6.0",
+      "npm:@types/node": "npm:@types/node@18.16.19",
+      "npm:@types/node@18.16.19": "npm:@types/node@18.16.19",
       "npm:axe": "npm:axe@12.2.3",
-      "npm:consola": "npm:consola@3.2.3",
+      "npm:axe@12.2.3": "npm:axe@12.2.3",
+      "npm:fs-extra@latest": "npm:fs-extra@11.2.0",
+      "npm:js-yaml@latest": "npm:js-yaml@4.1.0",
       "npm:prepare-stack-trace": "npm:prepare-stack-trace@0.0.4",
       "npm:ramda@latest": "npm:ramda@0.29.1",
       "npm:release-it@latest": "npm:release-it@17.6.0",
-      "npm:serialize-error": "npm:serialize-error@11.0.3",
       "npm:stacktrace-js": "npm:stacktrace-js@2.0.2",
       "npm:type-fest": "npm:type-fest@2.19.0",
       "npm:zod@^3.23.8": "npm:zod@3.23.8"
@@ -64,6 +71,9 @@
           "jsr:@std/path@1",
           "jsr:@ts-morph/bootstrap@^0.24.0"
         ]
+      },
+      "@es-toolkit/es-toolkit@1.17.0": {
+        "integrity": "dfbefedc4c821c97dbbfe33a716b4b34d486f2c214dce3b7c3f8161344d2e72a"
       },
       "@std/assert@0.223.0": {
         "integrity": "eb8d6d879d76e1cc431205bd346ed4d88dc051c6366365b1af47034b0670be24"
@@ -179,6 +189,12 @@
           "@babel/helper-validator-identifier": "@babel/helper-validator-identifier@7.22.20",
           "chalk": "chalk@2.4.2",
           "js-tokens": "js-tokens@4.0.0"
+        }
+      },
+      "@defensive-programming/aider@0.0.3": {
+        "integrity": "sha512-3JydSK4kh2M9RbniWIJo3RUXimsYbQA+utnzKQzaODo93etqP8eR12x2YCbGUyG2md1nhxqR3PQZDQP8X+vGEQ==",
+        "dependencies": {
+          "zod": "zod@3.23.8"
         }
       },
       "@iarna/toml@2.2.5": {
@@ -767,10 +783,6 @@
           "write-file-atomic": "write-file-atomic@3.0.3",
           "xdg-basedir": "xdg-basedir@5.1.0"
         }
-      },
-      "consola@3.2.3": {
-        "integrity": "sha512-I5qxpzLv+sJhTVEoLYNcTW+bThDCPsit0vLNKShZx6rLtpilNpmmeTPaeqJb9ZE9dV3DGaeby6Vuhrw38WjeyQ==",
-        "dependencies": {}
       },
       "console-polyfill@0.3.0": {
         "integrity": "sha512-w+JSDZS7XML43Xnwo2x5O5vxB0ID7T5BdqDtyqT6uiCAX2kZAgcWxNaGqT97tZfSHzfOcvrfsDAodKcJ3UvnXQ==",
@@ -2088,12 +2100,6 @@
         "integrity": "sha512-FNAIBWCx9qcRhoHcgcJ0gvU7SN1lYU2ZXuSfl04bSC5OpvDHFyJCjdNHomPXxjQlCBU67YW64PzY7/VIEH7F2w==",
         "dependencies": {}
       },
-      "serialize-error@11.0.3": {
-        "integrity": "sha512-2G2y++21dhj2R7iHAdd0FIzjGwuKZld+7Pl/bTU6YIkrC2ZMbVUjm+luj6A6V34Rv9XfKJDKpTWu9W4Gse1D9g==",
-        "dependencies": {
-          "type-fest": "type-fest@2.19.0"
-        }
-      },
       "shebang-command@2.0.0": {
         "integrity": "sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==",
         "dependencies": {
@@ -2572,9 +2578,15 @@
   "workspace": {
     "dependencies": [
       "jsr:@deno/dnt@^0.41.3",
+      "jsr:@es-toolkit/es-toolkit",
+      "jsr:@std/fs",
+      "npm:@defensive-programming/aider@latest",
+      "npm:@deno/shim-deno@^0.19.2",
       "npm:@inquirer/prompts@latest",
       "npm:@release-it/bumper@latest",
+      "npm:@types/node@^18.16.19",
       "npm:release-it@latest",
+      "npm:type-fest@latest",
       "npm:zod@^3.23.8"
     ]
   }

@@ -23,7 +23,14 @@ import * as zod from "zod";
 
 // FIXME: tree-shaking might work using esm.sh, but the built npm module will have problem to be used.
 // export { deserializeError, serializeError } from 'https://esm.sh/serialize-error?exports=deserializeError,serializeError'
-import * as U from './aider.ts';
+import * as U from '@defensive-programming/aider';
+/**
+ * HACK: we can't instal serialize-error and use it directly in Deno,
+ * This is because the bug from Deno. Basically, if a dependency is ESM (in this case, serialize-error),
+ * and when we built the project into CJS only, Deno actually just pack that dependency as a ESM module,
+ * so that means that the consumer, under CSJ env, uses our project will encounter an issue  "Error [ERR_REQUIRE_ESM]: require() of ES Module"
+ * unless they use bundler correctly.
+ */
 import { deserializeError as deserializeException, serializeError as serializeException, isErrorLike as isExceptionLike } from './serialize-error/index.js';
 import type { ErrorLike as ExceptionLike } from './serialize-error/index.d.ts';
 export { isExceptionLike, serializeException, type ExceptionLike, deserializeException };
@@ -126,7 +133,7 @@ export const designBubble = ($o: DesignBubbleOptions) =>
     {
       p1 = serializeException(p1);
       const $e = isExceptionLike(p1) ? p1 : new Exception("Unexpected exception", { code: code.unknown, cause: p1 });
-      return doBubble($e)
+      return doBubble($e as Exception)
     }
     else if (arguments.length === 2)
     {
